@@ -1,0 +1,10 @@
+langgraph
+langchain
+langchain-community
+langchain-openai
+chromadb
+sentence-transformers
+faiss-cpu
+python-dotenv
+tqdm
+requests
