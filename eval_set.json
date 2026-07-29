@@ -1,0 +1,20 @@
+[
+  {"id": "q1", "query": "What is Retrieval-Augmented Generation?", "expected_doc": "doc1"},
+  {"id": "q2", "query": "Why does RAG reduce hallucination compared to a plain LLM?", "expected_doc": "doc1"},
+  {"id": "q3", "query": "What are the two components of a RAG system?", "expected_doc": "doc1"},
+  {"id": "q4", "query": "What roles might a multi-agent system split a task into?", "expected_doc": "doc2"},
+  {"id": "q5", "query": "What does a Critic agent do in a multi-agent pipeline?", "expected_doc": "doc2"},
+  {"id": "q6", "query": "What is LangGraph used for?", "expected_doc": "doc2"},
+  {"id": "q7", "query": "What is automatic prompt optimization?", "expected_doc": "doc3"},
+  {"id": "q8", "query": "What is DSPy?", "expected_doc": "doc3"},
+  {"id": "q9", "query": "What's the core loop in an automatic prompt optimization system?", "expected_doc": "doc3"},
+  {"id": "q10", "query": "How does a vector database retrieve relevant chunks?", "expected_doc": "doc4"},
+  {"id": "q11", "query": "Name two lightweight vector database options for prototyping.", "expected_doc": "doc4"},
+  {"id": "q12", "query": "What does a vector database store text as?", "expected_doc": "doc4"},
+  {"id": "q13", "query": "How does a Researcher agent's output get used by an Analyst agent?", "expected_doc": "doc2"},
+  {"id": "q14", "query": "What kind of search does a vector database use to find similar chunks?", "expected_doc": "doc4"},
+  {"id": "q15", "query": "What is the weather in Bengaluru today?", "expected_doc": null, "note": "out-of-scope: should trigger retrieval-miss, not a hallucinated answer"},
+  {"id": "q16", "query": "Who won the 2026 cricket world cup?", "expected_doc": null, "note": "out-of-scope: tests whether Critic catches ungrounded claims"},
+  {"id": "q17", "query": "What programming language is best for machine learning?", "expected_doc": null, "note": "out-of-scope: opinion question, not answerable from docs"},
+  {"id": "q18", "query": "Compare RAG and automatic prompt optimization as reliability techniques.", "expected_doc": "doc1,doc3", "note": "requires synthesizing two docs — tests multi-chunk retrieval"}
+]
