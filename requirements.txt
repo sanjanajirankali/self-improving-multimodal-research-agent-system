@@ -1,0 +1,7 @@
+chromadb
+anthropic
+scikit-learn
+numpy
+pypdf
+pillow
+langgraph
