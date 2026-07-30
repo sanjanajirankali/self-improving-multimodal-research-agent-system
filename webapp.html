@@ -279,8 +279,8 @@
       <div class="sub">Uses the built-in knowledge base (Zero Trust, Federated Learning, Blockchain Security, Edge AI) — or add your own text or PDF below.</div>
 
       <div class="field">
-        <label>Anthropic API key <span style="text-transform:none;font-weight:400;color:var(--ink-soft);">— stays in your browser, sent directly to Anthropic, never stored</span></label>
-        <input type="password" id="apiKey" placeholder="sk-ant-...">
+        <label>Google Gemini API key <span style="text-transform:none;font-weight:400;color:var(--ink-soft);">— free, no credit card needed. Get one at aistudio.google.com/apikey</span></label>
+        <input type="password" id="apiKey" placeholder="AIza...">
         <div style="margin-top:8px;">
           <label style="display:inline-flex;align-items:center;gap:6px;text-transform:none;font-weight:400;font-size:13px;color:var(--ink-soft);cursor:pointer;">
             <input type="checkbox" id="noKeyMode" style="width:auto;">
@@ -474,27 +474,23 @@ async function callClaude(prompt){
   if (!apiKey){
     throw new Error("NO_API_KEY");
   }
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type":"application/json",
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "anthropic-dangerous-direct-browser-access": "true"
-    },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 500,
-      messages: [{role:"user", content: prompt}]
-    })
-  });
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    }
+  );
   if (!response.ok){
     const errText = await response.text();
     throw new Error("API_ERROR: " + errText.slice(0,200));
   }
   const data = await response.json();
-  const textBlock = (data.content||[]).find(b=>b.type==="text");
-  return textBlock ? textBlock.text : "(no response)";
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  return text || "(no response)";
 }
 
 document.getElementById('askBtn').addEventListener('click', async ()=>{
@@ -566,7 +562,7 @@ document.getElementById('askBtn').addEventListener('click', async ()=>{
     log(approved ? "Critic verdict: APPROVED" : "Critic verdict: FLAGGED");
   } catch(err){
     if (err.message === "NO_API_KEY"){
-      answerBox.textContent = "Paste your Anthropic API key above first — get one free at console.anthropic.com.";
+      answerBox.textContent = "Paste your free Gemini API key above first — get one at aistudio.google.com/apikey.";
     } else {
       answerBox.textContent = "The API call failed: " + err.message.replace("API_ERROR: ","");
     }
