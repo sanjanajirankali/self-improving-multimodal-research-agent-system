@@ -1,0 +1,5 @@
+Edge AI means running AI models directly on local devices (phones, cameras, sensors, embedded chips) instead of sending data to a cloud server for processing. The model itself lives on the device and inference happens locally.
+
+The main benefits are speed, privacy, and reliability: there's no network round-trip delay, sensitive data (like a security camera's video feed) never has to leave the device, and the system keeps working even without an internet connection. The tradeoff is that edge devices have far less compute power and memory than a cloud server, so models have to be compressed to run efficiently — common techniques include quantization (reducing the precision of the model's numbers, e.g. from 32-bit to 8-bit, to shrink size and speed up computation) and pruning (removing parts of the model that contribute little to its accuracy).
+
+Edge AI is widely used in scenarios where latency or privacy is critical: real-time object detection on security cameras, voice assistants that process a wake-word locally before sending anything to the cloud, and autonomous vehicles that can't afford the delay of a round-trip to a remote server for a driving decision.

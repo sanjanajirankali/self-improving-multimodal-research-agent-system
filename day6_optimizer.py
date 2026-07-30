@@ -98,7 +98,7 @@ if __name__ == "__main__":
     print(f"Retrieval accuracy AFTER  (k=4): {after:.0%}")
 
     if after > before:
-        print(f"\n Optimizer improved retrieval accuracy by {(after-before)*100:.0f} points.")
+        print(f"\n✅ Optimizer improved retrieval accuracy by {(after-before)*100:.0f} points.")
         print("   This is a real, measured before/after — no LLM call needed for this fix.")
     elif after == before:
         print("\n➖ No change from this fix at k=4 — would try k=6 or a better embedding next.")
