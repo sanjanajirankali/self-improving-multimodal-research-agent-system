@@ -281,6 +281,12 @@
       <div class="field">
         <label>Anthropic API key <span style="text-transform:none;font-weight:400;color:var(--ink-soft);">— stays in your browser, sent directly to Anthropic, never stored</span></label>
         <input type="password" id="apiKey" placeholder="sk-ant-...">
+        <div style="margin-top:8px;">
+          <label style="display:inline-flex;align-items:center;gap:6px;text-transform:none;font-weight:400;font-size:13px;color:var(--ink-soft);cursor:pointer;">
+            <input type="checkbox" id="noKeyMode" style="width:auto;">
+            Show source passage only — no key needed, no AI-generated answer
+          </label>
+        </div>
       </div>
       <div class="field">
         <label>Optional — add your own reference source</label>
@@ -497,9 +503,33 @@ document.getElementById('askBtn').addEventListener('click', async ()=>{
   const answerBox = document.getElementById('answerBox');
   const sourcesBox = document.getElementById('sources');
   const askBtn = document.getElementById('askBtn');
+  const noKeyMode = document.getElementById('noKeyMode').checked;
 
   if (!question){ return; }
   rebuildDocs(customDoc);
+
+  // ---------- No-key mode: pure retrieval, zero AI calls ----------
+  if (noKeyMode){
+    log(`Query received (no-key mode): "${question}"`);
+    const retrieved = retrieve(question, 2);
+    sourcesBox.innerHTML = retrieved.map(r => `
+      <div class="source-chunk">
+        <span class="tag">${r.id}</span>${r.text.slice(0,140)}...
+      </div>`).join("");
+    log(`Retrieved: ${retrieved.map(r=>r.id).join(", ")}`);
+
+    answerBox.className = "answer-box";
+    answerBox.textContent = "";
+    const label = document.createElement('div');
+    label.style.cssText = "font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;";
+    label.textContent = "Best matching source passage (no AI generation)";
+    const passage = document.createElement('div');
+    passage.textContent = retrieved[0] ? retrieved[0].text : "No matching source found.";
+    answerBox.appendChild(label);
+    answerBox.appendChild(passage);
+    log("Displayed raw source passage — no model call made.");
+    return;
+  }
 
   askBtn.disabled = true; askBtn.textContent = "Thinking...";
   answerBox.className = "answer-box"; answerBox.textContent = "Retrieving relevant sources...";
